@@ -1,3 +1,10 @@
+# Installation
+
+## Prerequisites
+
+* Java IDE : Itellij, Visual Studio Code, etc..
+* Python interpreter 3.9
+
 ## Installation procedure
 
 * Clone the project : *https://github.com/Jlebours/VeriteTerrain_Editor.git*
