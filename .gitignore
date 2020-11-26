@@ -1,7 +1,5 @@
 .idea
-src/PDL_1920_groupe-7
-src/WikipediaExtractor_Python
-
+src/main/extractors/
 # Compiled class file
 *.class
 
