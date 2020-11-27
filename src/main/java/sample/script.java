@@ -14,11 +14,21 @@ public class script {
     public static void main(String[] args) throws IOException {
         String repoUrlPython = "https://github.com/Jlebours/WikipediaExtractor_Python";
         String repoUrlJava = "https://github.com/Jlebours/PDL_1920_groupe-7";
-        cloneExtractor(repoUrlPython);
-        cloneExtractor(repoUrlJava);
-        runPythonExtractor();
 
-        // change paths in extractors
+        // TODO check if target directory for cloning exists for the two extractors
+
+        // clone python extractor
+        cloneExtractor(repoUrlPython);
+        // clone java extractor
+        cloneExtractor(repoUrlJava);
+
+        // TODO check if output dir exists at the root of the project
+        // TODO check if input dir exists at the root of the project
+
+        // python extractor execution
+        runPythonExtractor();
+        // java extractor execution
+
     }
 
     public static void cloneExtractor(String repoUrl){
