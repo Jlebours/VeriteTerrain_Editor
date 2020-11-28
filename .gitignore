@@ -1,5 +1,8 @@
 .idea
-src/main/extractors/
+src/main/java/WikipediaExtractor_Java
+src/main/java/WikipediaExtractor_Python
+output
+LoggerFile.xml
 
 # Compiled class file
 *.class
