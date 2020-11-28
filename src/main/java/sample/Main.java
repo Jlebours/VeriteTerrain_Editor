@@ -6,8 +6,11 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -19,7 +22,12 @@ public class Main extends Application {
 
         final ComboBox<String> comboBox = new ComboBox();
         comboBox.getItems().setAll("Exctracteur 1", "Extracteur 2", "Extracteur 3");
-        Button btn = new Button();
+        final Button btn = new Button();
+        final ComboBox<String> comboBoxCSV = new ComboBox();
+
+        //Pour celle ci while on est dans le fichier iterator.hasNext on rajoute une valeur et ensuite on ajoute dans la liste.
+
+
         comboBox.valueProperty().addListener(observable -> {
 
             comboBoxValue = comboBox.getSelectionModel().getSelectedItem().toString();
@@ -35,21 +43,37 @@ public class Main extends Application {
                     } else if (index == 1) {
                         System.out.println("//Lancer le Java sur le CSV");
                     } else {
-                        System.out.println("//Lancer le python");
+                        try {
+                            script.cloneExtractor("src/main/extractors/WikipediaExtractor_Python");
+                            script.runPythonExtractor();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     System.out.println("L'extracteur selectionné est l'" + comboBoxValue);
                 }
             });
         });
-        btn.setTranslateX(75);
-        btn.setTranslateY(100);
-        primaryStage.setTitle("Exctrator");
-        btn.setText("Lancez votre extracteur");
+
         StackPane root = new StackPane();
+
+        comboBox.setTranslateX(0);
+        comboBox.setTranslateY(-30);
+        btn.setTranslateX(0);
+        btn.setTranslateY(30);
+        btn.setText("Lancez votre extracteur");
+
+
+
+        primaryStage.setTitle("Exctrator");
+
         root.getChildren().add(comboBox);
         root.getChildren().add(btn);
+
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
+
+
     }
 
     public static void main(String[] args) {
