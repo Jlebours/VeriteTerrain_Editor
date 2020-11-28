@@ -21,7 +21,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="maven" target="1.5" />
-      <module name="VeriteTerrain_Extractor" target="7" />
+      <module name="VeriteTerrain_Extractor" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

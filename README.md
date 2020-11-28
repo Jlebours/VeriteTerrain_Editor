@@ -18,4 +18,4 @@ clone https://github.com/Jlebours/VeriteTerrain_Editor.git for development and t
 * JRE >= 1.8
 * java IDE  (Eclispe,Intelliji Idea etc..)
 * for installing and testing we are inviting you to click on, this below link
-[Install.md]()
+[Install.md](https://github.com/Jlebours/VeriteTerrain_Editor/blob/master/INSTALL.md)
