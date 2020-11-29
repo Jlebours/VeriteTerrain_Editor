@@ -55,6 +55,8 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
+                    String urlTextField = textField.getText();
+                    System.out.println(urlTextField);
                     if (index == 0) {
                         try {
                             python = false;
@@ -126,6 +128,7 @@ public class Main extends Application {
         primaryStage.show();
 
     }
+
 
     public static void main(String[] args) {
         launch(args);
