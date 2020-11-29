@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     String comboBoxValue = "";
@@ -39,7 +41,12 @@ public class Main extends Application {
                     } else if (index == 1) {
                         System.out.println("//Lancer le Java sur le CSV");
                     } else {
-                        System.out.println("//Lancer le python");
+                        try {
+                            ExtractorsImpl.cloneExtractor("src/main/extractors/WikipediaExtractor_Python");
+                            ExtractorsImpl.runPythonExtractor();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     System.out.println("L'extracteur selectionné est l'" + comboBoxValue);
                 }
@@ -75,5 +82,6 @@ public class Main extends Application {
         launch(args);
     }
 }
+
 
 
