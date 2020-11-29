@@ -3,14 +3,13 @@ package sample;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
@@ -22,11 +21,8 @@ public class Main extends Application {
 
         final ComboBox<String> comboBox = new ComboBox();
         comboBox.getItems().setAll("Exctracteur 1", "Extracteur 2", "Extracteur 3");
-        final Button btn = new Button();
-        final ComboBox<String> comboBoxCSV = new ComboBox();
-
-        //Pour celle ci while on est dans le fichier iterator.hasNext on rajoute une valeur et ensuite on ajoute dans la liste.
-
+        Button btn = new Button();
+        TextField textField = new TextField("Chose an url");
 
         comboBox.valueProperty().addListener(observable -> {
 
@@ -43,36 +39,35 @@ public class Main extends Application {
                     } else if (index == 1) {
                         System.out.println("//Lancer le Java sur le CSV");
                     } else {
-                        try {
-                            script.cloneExtractor("src/main/extractors/WikipediaExtractor_Python");
-                            script.runPythonExtractor();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("//Lancer le python");
                     }
                     System.out.println("L'extracteur selectionné est l'" + comboBoxValue);
                 }
             });
         });
-
-        StackPane root = new StackPane();
-
         comboBox.setTranslateX(0);
         comboBox.setTranslateY(-30);
         btn.setTranslateX(0);
         btn.setTranslateY(30);
+        textField.setTranslateX(0);
+        textField.setTranslateY(-100);
+        primaryStage.setTitle("Extractor");
+
+
         btn.setText("Lancez votre extracteur");
+        StackPane root = new StackPane();
 
+        textField.setMinWidth(180);
 
+        root.setPadding(new Insets(10));
 
-        primaryStage.setTitle("Exctrator");
+        primaryStage.setTitle("JavaFX TextField (o7planning.org)");
 
         root.getChildren().add(comboBox);
         root.getChildren().add(btn);
-
+        root.getChildren().addAll(textField);
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
-
 
     }
 
