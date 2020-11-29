@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public class script {
+public class ExtractorsImpl {
     public static void main(String[] args) throws IOException {
         String repoUrlPython = "https://github.com/Jlebours/WikipediaExtractor_Python";
         String repoUrlJava = "https://github.com/Jlebours/PDL_1920_groupe-7";
@@ -28,15 +28,15 @@ public class script {
         // python extractor execution
         runPythonExtractor();
         // java extractor execution
-
+        //runJavaExtractor();
     }
 
     public static void cloneExtractor(String repoUrl){
         String cloneDirectoryPath;
         if (repoUrl.equals("https://github.com/Jlebours/PDL_1920_groupe-7")){
-            cloneDirectoryPath = "src/main/extractors/WikipediaExtractor_Java";
+            cloneDirectoryPath = "src/main/java/wikipediaExtractor_Java";
         } else {
-            cloneDirectoryPath = "src/main/extractors/WikipediaExtractor_Python";
+            cloneDirectoryPath = "src/main/java/wikipediaExtractor_Python";
         }
         File cloneJava = new File(cloneDirectoryPath);
         // check if repo for clone java extractor exists
@@ -63,8 +63,7 @@ public class script {
 
     public static void runPythonExtractor() throws IOException {
         // Python extractor exec
-        Process p = Runtime.getRuntime().exec("python src/main/extractors/WikipediaExtractor_Python/main.py");
-        // Process t = Runtime.getRuntime().exec("java src/main/extractors/WikipediaExtractor_Java/src/main/java/fr/istic/pdl1819_grp5/wikiMain.java");
+        Process p = Runtime.getRuntime().exec("python src/main/java/wikipediaExtractor_Python/main.py");
         // output
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));
@@ -78,6 +77,39 @@ public class script {
         String err;
         while ((err = stdError.readLine()) != null) {
             System.out.println(err);
+        }
+    }
+
+    public static void runJavaExtractor() throws IOException {
+        Process p = Runtime.getRuntime().exec("javac sample/JavaScript.java");
+        Process p2 = Runtime.getRuntime().exec("java sample/JavaScript");
+
+        BufferedReader stdInput = new BufferedReader(new
+                InputStreamReader(p.getInputStream()));
+        // error
+        BufferedReader stdError = new BufferedReader(new
+                InputStreamReader(p.getErrorStream()));
+        String o;
+        while ((o = stdInput.readLine()) != null) {
+            System.out.println(o);
+        }
+        String err;
+        while ((err = stdError.readLine()) != null) {
+            System.out.println(err);
+        }
+
+        BufferedReader stdInput2 = new BufferedReader(new
+                InputStreamReader(p2.getInputStream()));
+        // error
+        BufferedReader stdError2 = new BufferedReader(new
+                InputStreamReader(p2.getErrorStream()));
+        String qui;
+        while ((qui = stdInput2.readLine()) != null) {
+            System.out.println(qui);
+        }
+        String err2;
+        while ((err2 = stdError2.readLine()) != null) {
+            System.out.println(err2);
         }
     }
 }
