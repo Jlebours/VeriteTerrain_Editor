@@ -34,6 +34,8 @@ public class Main extends Application {
 
                 @Override
                 public void handle(ActionEvent event) {
+                    String urlTextField = textField.getText();
+                    System.out.println(urlTextField);
                     if (index == 0) {
                         System.out.println("//lancer l'ancien Java l'extracteur Java witext ");
                     } else if (index == 1) {
@@ -70,6 +72,7 @@ public class Main extends Application {
         primaryStage.show();
 
     }
+
 
     public static void main(String[] args) {
         launch(args);
