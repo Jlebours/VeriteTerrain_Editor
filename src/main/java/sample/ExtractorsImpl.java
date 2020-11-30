@@ -14,26 +14,19 @@ public class ExtractorsImpl {
     public static void main(String[] args) throws IOException {
         String repoUrlPython = "https://github.com/Jlebours/WikipediaExtractor_Python";
         String repoUrlJava = "https://github.com/Jlebours/PDL_1920_groupe-7";
-
-        // TODO check if target directory for cloning exists for the two extractors
-
-        // clone python extractor
         cloneExtractor(repoUrlPython);
-        // clone java extractor
         cloneExtractor(repoUrlJava);
-
-        // TODO check if output dir exists at the root of the project
-        // TODO check if input dir exists at the root of the project
-
-        // python extractor execution
+        verifyOutputExists();
+        verifyInputExists();
         runPythonExtractor();
-        // java extractor execution
         //runJavaExtractor();
+        // TODO after cloning java extactor, uncomment the under line
+        //fr.istic.pdl1819_grp5.wikiMain.main(new String[0]);
     }
 
-    public static void cloneExtractor(String repoUrl){
+    public static void cloneExtractor(String repoUrl) {
         String cloneDirectoryPath;
-        if (repoUrl.equals("https://github.com/Jlebours/PDL_1920_groupe-7")){
+        if (repoUrl.equals("https://github.com/Jlebours/PDL_1920_groupe-7")) {
             cloneDirectoryPath = "src/main/java/wikipediaExtractor_Java";
         } else {
             cloneDirectoryPath = "src/main/java/wikipediaExtractor_Python";
@@ -41,12 +34,12 @@ public class ExtractorsImpl {
         File cloneJava = new File(cloneDirectoryPath);
         // check if repo for clone java extractor exists
         boolean cloneJavaPresent = false;
-        if (!cloneJava.exists()){
+        if (!cloneJava.exists()) {
             cloneJavaPresent = cloneJava.mkdir();
         } else {
             cloneJavaPresent = true;
         }
-        if (cloneJavaPresent && Objects.requireNonNull(cloneJava.list()).length == 0){
+        if (cloneJavaPresent && Objects.requireNonNull(cloneJava.list()).length == 0) {
             try {
                 System.out.println("Cloning " + repoUrl + " into " + cloneDirectoryPath);
                 Git.cloneRepository()
@@ -112,4 +105,32 @@ public class ExtractorsImpl {
             System.out.println(err2);
         }
     }
+
+    public static void verifyOutputExists() {
+        File output = new File("output");
+        if (!output.exists()) {
+            output.mkdir();
+            System.out.println("Output initialized");
+        } else {
+            System.out.println("Output is already present");
+        }
+    }
+
+    public static void verifyInputExists() throws IOException {
+        File input = new File("inputdata");
+        File wikiurls = new File("inputdata/wikiurls.txt");
+        if (!input.exists()) {
+            input.mkdir();
+            wikiurls.createNewFile();
+            System.out.println("Empty inputdata initialized");
+        } else {
+            if (!wikiurls.exists()) {
+                wikiurls.createNewFile();
+                System.out.println("Empty inputdata initialized");
+            } else {
+                System.out.println("Inputdata is already present");
+            }
+        }
+    }
+
 }
