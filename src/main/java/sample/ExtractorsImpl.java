@@ -3,10 +3,7 @@ package sample;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -20,8 +17,11 @@ public class ExtractorsImpl {
         verifyInputExists();
         runPythonExtractor();
         //runJavaExtractor();
+
         // TODO after cloning java extactor, uncomment the under line
         //fr.istic.pdl1819_grp5.wikiMain.main(new String[0]);
+
+        modifyWikiurls("Comparison_(grammar)");
     }
 
     public static void cloneExtractor(String repoUrl) {
@@ -55,6 +55,10 @@ public class ExtractorsImpl {
     }
 
     public static void runPythonExtractor() throws IOException {
+        File python = new File("output/python");
+        for(File file: python.listFiles()){
+            file.delete();
+        }
         // Python extractor exec
         Process p = Runtime.getRuntime().exec("python src/main/java/wikipediaExtractor_Python/main.py");
         // output
@@ -133,4 +137,16 @@ public class ExtractorsImpl {
         }
     }
 
+    public static void modifyWikiurls(String url) throws IOException {
+        try{
+            File wikiurls = new File("inputdata/wikiurls.txt");
+            wikiurls.createNewFile();
+            FileWriter fw = new FileWriter(wikiurls.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(url);
+            bw.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
