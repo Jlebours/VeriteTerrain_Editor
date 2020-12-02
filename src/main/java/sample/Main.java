@@ -62,8 +62,6 @@ public class Main extends Application {
                             python = false;
                             javaHTML = true;
                             javaWikiUrl = false;
-
-                            CloneExtractors.cloneExtractor("https://github.com/Jlebours/PDL_1920_groupe-7");
                             RunExtractors.runJavaExtractor();
                             launchResult();
                         } catch (IOException e) {
@@ -75,8 +73,6 @@ public class Main extends Application {
                             python = false;
                             javaHTML = false;
                             javaWikiUrl = true;
-
-                            CloneExtractors.cloneExtractor("https://github.com/Jlebours/PDL_1920_groupe-7");
                             RunExtractors.runJavaExtractor();
                             launchResult();
                         } catch (IOException e) {
@@ -88,8 +84,6 @@ public class Main extends Application {
                             python = true;
                             javaHTML = false;
                             javaWikiUrl = false;
-
-                            CloneExtractors.cloneExtractor("https://github.com/Jlebours/WikipediaExtractor_Python.git");
                             RunExtractors.runPythonExtractor();
                             launchResult();
                         } catch (IOException e) {

@@ -11,7 +11,7 @@ it will be to the user to validate this result, to reject or to edit it.
 
 
 ## Getting Started
-1) clone https://github.com/Jlebours/VeriteTerrain_Editor.git
+1) Clone https://github.com/Jlebours/VeriteTerrain_Editor.git
 2) Run main of **CloneExtractors**
 3) Now open the **wikipediaExtractor_Java** project located in the "extractors" directory of the current directory of your project.
 4) Check that the project is in a java version 1.8 : File -> Project Structure -> Project -> Project SDK -> **Java 1.8**
