@@ -14,6 +14,7 @@ public class CloneExtractors {
         String repoUrlJava = "https://github.com/Jlebours/PDL_1920_groupe-7";
         cloneExtractor(repoUrlPython);
         cloneExtractor(repoUrlJava);
+        Runtime.getRuntime().exec("cmd /c start \"\" generateJAR.bat");
     }
 
     public static void cloneExtractor(String repoUrl) {

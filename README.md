@@ -18,10 +18,14 @@ it will be to the user to validate this result, to reject or to edit it.
 
 ## Getting Started
 1) Clone https://github.com/Jlebours/VeriteTerrain_Editor.git
-2) Run main of **CloneExtractors**
-3) Now open the **wikipediaExtractor_Java** project located in the "extractors" directory of the current directory of your project.
+### On Windows
+2) Run **CloneExtractors.java**, be careful to do it **before launching the main.java**
+3) Run **main.java**
+### On Linux and Mac
+2) Run **CloneExtractors.java**
+3) Now open the **wikipediaExtractor_Java** project located in the "extractors" directory of the current directory of your project
 4) Open terminal and run this command : **mvn package -Dmaven.test.skip=true**
-5) Come back to the project **VeriteTerrain_Editor**, you can now run the main.
+5) Come back to the project **VeriteTerrain_Editor**, you can now run **main.java**
 
 
   
