@@ -1,66 +1,25 @@
 package sample;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.Objects;
 
-public class ExtractorsImpl {
+public class RunExtractors {
     public static void main(String[] args) throws IOException {
-        String repoUrlPython = "https://github.com/Jlebours/WikipediaExtractor_Python";
-        String repoUrlJava = "https://github.com/Jlebours/PDL_1920_groupe-7";
-        cloneExtractor(repoUrlPython);
-        cloneExtractor(repoUrlJava);
         verifyOutputExists();
         verifyInputExists();
         runPythonExtractor();
-        //runJavaExtractor();
-
-        // TODO after cloning java extactor, uncomment the under line
-        //fr.istic.pdl1819_grp5.wikiMain.main(new String[0]);
-
-        modifyWikiurls("Comparison_(grammar)");
-    }
-
-    public static void cloneExtractor(String repoUrl) {
-        String cloneDirectoryPath;
-        if (repoUrl.equals("https://github.com/Jlebours/PDL_1920_groupe-7")) {
-            cloneDirectoryPath = "src/main/java/wikipediaExtractor_Java";
-        } else {
-            cloneDirectoryPath = "src/main/java/wikipediaExtractor_Python";
-        }
-        File cloneJava = new File(cloneDirectoryPath);
-        // check if repo for clone java extractor exists
-        boolean cloneJavaPresent = false;
-        if (!cloneJava.exists()) {
-            cloneJavaPresent = cloneJava.mkdir();
-        } else {
-            cloneJavaPresent = true;
-        }
-        if (cloneJavaPresent && Objects.requireNonNull(cloneJava.list()).length == 0) {
-            try {
-                System.out.println("Cloning " + repoUrl + " into " + cloneDirectoryPath);
-                Git.cloneRepository()
-                        .setURI(repoUrl)
-                        .setDirectory(Paths.get(cloneDirectoryPath).toFile())
-                        .call();
-                System.out.println("Completed Cloning");
-            } catch (GitAPIException e) {
-                System.out.println("Exception occurred while cloning repo");
-                e.printStackTrace();
-            }
-        }
+        runJavaExtractor();
     }
 
     public static void runPythonExtractor() throws IOException {
         File python = new File("output/python");
-        for(File file: python.listFiles()){
-            file.delete();
+        if (python.exists()) {
+            for (File file : python.listFiles()) {
+                file.delete();
+            }
         }
         // Python extractor exec
-        Process p = Runtime.getRuntime().exec("python src/main/java/wikipediaExtractor_Python/main.py");
+        //Process p = Runtime.getRuntime().exec("python src/main/java/wikipediaExtractor_Python/main.py");
+        Process p = Runtime.getRuntime().exec("python ../extractors/wikipediaExtractor_Python/main.py");
         // output
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));
@@ -78,9 +37,19 @@ public class ExtractorsImpl {
     }
 
     public static void runJavaExtractor() throws IOException {
-        Process p = Runtime.getRuntime().exec("javac sample/JavaScript.java");
-        Process p2 = Runtime.getRuntime().exec("java sample/JavaScript");
-
+        File html = new File("output/html");
+        if (html.exists()) {
+            for (File file : html.listFiles()) {
+                file.delete();
+            }
+        }
+        File wikitext = new File("output/wikitext");
+        if (wikitext.exists()) {
+            for (File file : wikitext.listFiles()) {
+                file.delete();
+            }
+        }
+        Process p = Runtime.getRuntime().exec("java -jar ../extractors/wikipediaExtractor_Java/target/WikipediaMatrix-1.0-SNAPSHOT.jar");
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));
         // error
@@ -93,20 +62,6 @@ public class ExtractorsImpl {
         String err;
         while ((err = stdError.readLine()) != null) {
             System.out.println(err);
-        }
-
-        BufferedReader stdInput2 = new BufferedReader(new
-                InputStreamReader(p2.getInputStream()));
-        // error
-        BufferedReader stdError2 = new BufferedReader(new
-                InputStreamReader(p2.getErrorStream()));
-        String qui;
-        while ((qui = stdInput2.readLine()) != null) {
-            System.out.println(qui);
-        }
-        String err2;
-        while ((err2 = stdError2.readLine()) != null) {
-            System.out.println(err2);
         }
     }
 
