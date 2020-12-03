@@ -34,13 +34,35 @@ public class Main extends Application {
                 comboBoxResult.getItems().add(filesFromPython[i].toString());
             }
         }
+        else if(javaWikiUrl){
+            File exctractFromPython = new File("output/wikitext");
+            File[] filesFromPython = exctractFromPython.listFiles();
+
+            for (int i = 0; i < filesFromPython.length; i++) {
+                String fileName = filesFromPython[i].toString();
+                comboBoxResult.getItems().add(filesFromPython[i].toString());
+            }
+        }
+        else if(javaHTML){
+            File exctractFromPython = new File("output/html");
+            File[] filesFromPython = exctractFromPython.listFiles();
+
+            for (int i = 0; i < filesFromPython.length; i++) {
+                String fileName = filesFromPython[i].toString();
+                comboBoxResult.getItems().add(filesFromPython[i].toString());
+            }
+        }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+
+        RunExtractors.verifyInputExists();
+        RunExtractors.verifyOutputExists();
+
         final ComboBox<String> comboBox = new ComboBox();
-        comboBox.getItems().setAll("Exctracteur 1", "Extracteur 2", "Extracteur 3");
+        comboBox.getItems().setAll("Exctracteur Java HTML", "Extracteur Java WikiText", "Extracteur Python");
         Button btn = new Button();
         TextField textField = new TextField("Chose an url");
 
@@ -59,9 +81,11 @@ public class Main extends Application {
                     System.out.println(urlTextField);
                     if (index == 0) {
                         try {
+                            comboBoxResult.
                             python = false;
                             javaHTML = true;
                             javaWikiUrl = false;
+                            RunExtractors.modifyWikiurls(urlTextField);
                             RunExtractors.runJavaExtractor();
                             launchResult();
                         } catch (IOException e) {
