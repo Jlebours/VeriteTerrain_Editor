@@ -81,7 +81,7 @@ public class Main extends Application {
                     System.out.println(urlTextField);
                     if (index == 0) {
                         try {
-                            comboBoxResult.
+                            //comboBoxResult.
                             python = false;
                             javaHTML = true;
                             javaWikiUrl = false;
