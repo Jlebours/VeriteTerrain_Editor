@@ -1,30 +1,44 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.ast.Str;
 
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Main extends Application {
 
     String comboBoxValue = "";
-    String comboBoxResultValue="";
+    String comboBoxResultValue = "";
     int index = 0;
     final ComboBox<String> comboBoxResult = new ComboBox();
     private Boolean python = false;
     private Boolean javaWikiUrl = false;
     private Boolean javaHTML = false;
+
+    private final TableView tableView = new TableView<>();
+    private final ObservableList<Map<String, String>> dataList
+            = FXCollections.observableArrayList();
+
+    private int countMaxCol = 0;
 
 
     public void launchResult() {
@@ -58,6 +72,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        TableView<String> tableView = new TableView<>();
 
         RunExtractors.verifyInputExists();
         RunExtractors.verifyOutputExists();
@@ -66,6 +81,7 @@ public class Main extends Application {
         comboBox.getItems().setAll("Exctracteur Java HTML", "Extracteur Java WikiText", "Extracteur Python");
         Button btn = new Button();
         Button tabBtn = new Button();
+        Button compareButton = new Button();
         TextField textField = new TextField("Chose an url");
 
 
@@ -127,11 +143,69 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                     System.out.println("Je clique sur le bouton afficher les fichiers");
+                    tst(primaryStage);
 
                 }
 
             });
         });
+
+        compareButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+
+                    //On va récupérer grace a l'index
+
+                    File pythonFile = new File("output\\python\\Comparison_between_Esperanto_and_Ido_1.csv");
+                    File javaHtmlFile = new File("output\\html\\Comparison_between_Esperanto_and_Ido-1.csv");
+                    File wikiTextFile = new File("output\\wikitext\\Comparison_between_Esperanto_and_Ido-1.csv");
+
+
+//                    String pythonContent = null;
+//                    pythonContent = FileUtils.readFileToString(pythonFile);
+//
+//                    String javaHtmlContent = null;
+//                    javaHtmlContent = FileUtils.readFileToString(javaHtmlFile);
+//
+//                    String javaWikiTextContent = null;
+//                    javaWikiTextContent = FileUtils.readFileToString(wikiTextFile);
+
+                    if(!(FileUtils.contentEquals(pythonFile,javaHtmlFile))){
+                        System.out.println("Je ne suis pas égal avec les files");
+                    }
+
+
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (python) {
+                    try {
+
+                        RunExtractors.runJavaExtractor();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (javaHTML || javaWikiUrl) {
+                    try {
+                        RunExtractors.runPythonExtractor();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        });
+
 
         comboBox.setTranslateX(0);
         comboBox.setTranslateY(-30);
@@ -141,6 +215,8 @@ public class Main extends Application {
         btn.setTranslateY(30);
         tabBtn.setTranslateX(0);
         tabBtn.setTranslateY(100);
+        compareButton.setTranslateX(0);
+        compareButton.setTranslateY(130);
         textField.setTranslateX(0);
         textField.setTranslateY(-100);
         primaryStage.setTitle("Extractor");
@@ -148,6 +224,7 @@ public class Main extends Application {
 
         btn.setText("Lancer votre extracteur");
         tabBtn.setText("Afficher le contenu du fichier");
+        compareButton.setText("Afficher les différences");
         StackPane root = new StackPane();
 
         textField.setMinWidth(180);
@@ -159,12 +236,67 @@ public class Main extends Application {
         root.getChildren().add(comboBox);
         root.getChildren().add(btn);
         root.getChildren().add(tabBtn);
+        root.getChildren().add(compareButton);
         root.getChildren().addAll(textField);
         root.getChildren().addAll(comboBoxResult);
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
 
     }
+
+    private void readCSV() {
+        String CsvFile = "output/html/Comparison_between_Esperanto_and_Ido-0.csv";
+        String FieldDelimiter = ",";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(CsvFile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                Map<String, String> CSVLine = new HashMap<>();
+                String[] fields = line.split(FieldDelimiter, -1);
+                for (int i = 0; i < fields.length; i++) {
+                    CSVLine.put("column"+i, fields[i]);
+
+                }
+                dataList.add(CSVLine);
+                if(countMaxCol < fields.length) {
+                    countMaxCol = fields.length;
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void tst( Stage primaryStage) {
+        readCSV();
+        primaryStage.setTitle("CSV");
+        Group root = new Group();
+
+        for (int i = 1; i <= countMaxCol; i++) {
+            TableColumn<Map, String> columnF = new TableColumn("Ma colonne " + i);
+            columnF.setCellValueFactory(new MapValueFactory<>("column"+i));
+            tableView.getColumns().addAll(columnF);
+        }
+
+        tableView.setItems(dataList);
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.getChildren().add(tableView);
+
+        root.getChildren().add(vBox);
+
+        primaryStage.setScene(new Scene(root, 700, 250));
+        primaryStage.show();
+
+    }
+
 
 
     public static void main(String[] args) {
