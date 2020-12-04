@@ -49,5 +49,14 @@ it will be to the user to validate this result, to reject or to edit it.
 * [Batch](https://windows.developpez.com/cours/ligne-commande/?page=page_24) allows you to design scripts 
   that will be interpreted by the "shell" or command interpreter.
   
+## Functionalities to develop
+* The automation of the creation of the JAR file of the java extractor under MAC and LINUX OS.
+
+## Authors 
+* Karla ROSAS
+* Rabeaa KESSAL
+* Léo VARIERAS
+* Johan LE BOURSICAUD
+  
 
   
