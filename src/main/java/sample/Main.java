@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -143,7 +144,7 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                     System.out.println("Je clique sur le bouton afficher les fichiers");
-                    tst(primaryStage);
+                    displayCSV(primaryStage);
 
                 }
 
@@ -273,7 +274,7 @@ public class Main extends Application {
         }
     }
 
-    public void tst( Stage primaryStage) {
+    public void displayCSV( Stage primaryStage) {
         readCSV();
         primaryStage.setTitle("CSV");
         Group root = new Group();
@@ -282,6 +283,8 @@ public class Main extends Application {
             TableColumn<Map, String> columnF = new TableColumn("Ma colonne " + i);
             columnF.setCellValueFactory(new MapValueFactory<>("column"+i));
             tableView.getColumns().addAll(columnF);
+            tableView.setEditable(true);
+            columnF.setCellFactory(TextFieldTableCell.forTableColumn());
         }
 
         tableView.setItems(dataList);
