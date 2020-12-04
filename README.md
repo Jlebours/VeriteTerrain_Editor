@@ -37,9 +37,8 @@ it will be to the user to validate this result, to reject or to edit it.
   All this to be able to launch it from your project, difficulty that we don't have for the python extractor.
 * Then you can launch the application. Once the url is specified, you will then launch the chosen extractor.
   You will find the extracted tables in the list in the interface.
-* Once a table is selected in the list, it will be displayed as a tableView that you can compare with others,
-  modify and save.
-* You will find tables that you saved in the goundtruth directory at the root of the project.
+* Once a table is selected in the list, it will be displayed as a tableView that you can modify in it. 
+
 
 ## Technologies
 * [JGit](https://git-scm.com/book/fr/v2/Annexe-B%3A-Embarquer-Git-dans-vos-applications-JGit) is a library 
