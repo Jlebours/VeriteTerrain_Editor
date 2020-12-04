@@ -17,8 +17,6 @@ public class RunExtractors {
                 file.delete();
             }
         }
-        // Python extractor exec
-        //Process p = Runtime.getRuntime().exec("python src/main/java/wikipediaExtractor_Python/main.py");
         Process p = Runtime.getRuntime().exec("python ../extractors/wikipediaExtractor_Python/main.py");
         // output
         BufferedReader stdInput = new BufferedReader(new
