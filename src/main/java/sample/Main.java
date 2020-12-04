@@ -10,6 +10,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.luaj.vm2.ast.Str;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     String comboBoxValue = "";
+    String comboBoxResultValue="";
     int index = 0;
     final ComboBox<String> comboBoxResult = new ComboBox();
     private Boolean python = false;
@@ -33,15 +36,36 @@ public class Main extends Application {
                 String fileName = filesFromPython[i].toString();
                 comboBoxResult.getItems().add(filesFromPython[i].toString());
             }
+        } else if (javaWikiUrl) {
+            File exctractFromPython = new File("output/wikitext");
+            File[] filesFromPython = exctractFromPython.listFiles();
+
+            for (int i = 0; i < filesFromPython.length; i++) {
+                String fileName = filesFromPython[i].toString();
+                comboBoxResult.getItems().add(filesFromPython[i].toString());
+            }
+        } else if (javaHTML) {
+            File exctractFromPython = new File("output/html");
+            File[] filesFromPython = exctractFromPython.listFiles();
+
+            for (int i = 0; i < filesFromPython.length; i++) {
+                String fileName = filesFromPython[i].toString();
+                comboBoxResult.getItems().add(filesFromPython[i].toString());
+            }
         }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+
+        RunExtractors.verifyInputExists();
+        RunExtractors.verifyOutputExists();
+
         final ComboBox<String> comboBox = new ComboBox();
-        comboBox.getItems().setAll("Exctracteur 1", "Extracteur 2", "Extracteur 3");
+        comboBox.getItems().setAll("Exctracteur Java HTML", "Extracteur Java WikiText", "Extracteur Python");
         Button btn = new Button();
+        Button tabBtn = new Button();
         TextField textField = new TextField("Chose an url");
 
 
@@ -59,9 +83,11 @@ public class Main extends Application {
                     System.out.println(urlTextField);
                     if (index == 0) {
                         try {
+                            //comboBoxResult.
                             python = false;
                             javaHTML = true;
                             javaWikiUrl = false;
+                            RunExtractors.modifyWikiurls(urlTextField);
                             RunExtractors.runJavaExtractor();
                             launchResult();
                         } catch (IOException e) {
@@ -94,18 +120,34 @@ public class Main extends Application {
                 }
             });
         });
+        comboBoxResult.valueProperty().addListener(observable -> {
+            comboBoxResultValue = comboBoxResult.getSelectionModel().getSelectedItem().toString();
+            System.out.println(comboBoxResultValue);
+            tabBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    System.out.println("Je clique sur le bouton afficher les fichiers");
+
+                }
+
+            });
+        });
+
         comboBox.setTranslateX(0);
         comboBox.setTranslateY(-30);
         comboBoxResult.setTranslateX(-50);
         comboBoxResult.setTranslateY(60);
         btn.setTranslateX(0);
         btn.setTranslateY(30);
+        tabBtn.setTranslateX(0);
+        tabBtn.setTranslateY(100);
         textField.setTranslateX(0);
         textField.setTranslateY(-100);
         primaryStage.setTitle("Extractor");
 
 
-        btn.setText("Lancez votre extracteur");
+        btn.setText("Lancer votre extracteur");
+        tabBtn.setText("Afficher le contenu du fichier");
         StackPane root = new StackPane();
 
         textField.setMinWidth(180);
@@ -116,6 +158,7 @@ public class Main extends Application {
 
         root.getChildren().add(comboBox);
         root.getChildren().add(btn);
+        root.getChildren().add(tabBtn);
         root.getChildren().addAll(textField);
         root.getChildren().addAll(comboBoxResult);
         primaryStage.setScene(new Scene(root, 500, 500));
