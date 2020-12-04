@@ -10,19 +10,25 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.apache.commons.io.FileUtils;
 import org.luaj.vm2.ast.Str;
 
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Main extends Application {
@@ -144,7 +150,7 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                     System.out.println("Je clique sur le bouton afficher les fichiers");
-                    displayCSV(primaryStage);
+                    tst(primaryStage);
 
                 }
 
@@ -154,42 +160,18 @@ public class Main extends Application {
         compareButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
 
-                    //On va récupérer grace a l'index
+                List<String> pythonList = compareCSV(comboBoxResultValue);
+                String regex = "output\\/\\w+|\\/(.*)";
+                String[] tokensVal = comboBoxResultValue.split(regex);
 
-                    File pythonFile = new File("output\\python\\Comparison_between_Esperanto_and_Ido_1.csv");
-                    File javaHtmlFile = new File("output\\html\\Comparison_between_Esperanto_and_Ido-1.csv");
-                    File wikiTextFile = new File("output\\wikitext\\Comparison_between_Esperanto_and_Ido-1.csv");
-
-
-//                    String pythonContent = null;
-//                    pythonContent = FileUtils.readFileToString(pythonFile);
-//
-//                    String javaHtmlContent = null;
-//                    javaHtmlContent = FileUtils.readFileToString(javaHtmlFile);
-//
-//                    String javaWikiTextContent = null;
-//                    javaWikiTextContent = FileUtils.readFileToString(wikiTextFile);
-
-                    if(!(FileUtils.contentEquals(pythonFile,javaHtmlFile))){
-                        System.out.println("Je ne suis pas égal avec les files");
-                    }
-
-
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                System.out.println("MA REGEX"  + tokensVal[0]);
+                List<String> javaHTMLList = compareCSV("output/wikitext/"+tokensVal[0]);
+                List<String> javaWikiTextList = compareCSV("output/html/"+tokensVal[0]);
 
                 if (python) {
                     try {
-
                         RunExtractors.runJavaExtractor();
-
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -198,10 +180,26 @@ public class Main extends Application {
                     try {
                         RunExtractors.runPythonExtractor();
 
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+//                if(!(pythonList.size()==javaHTMLList.size()) || (pythonList.size()==javaWikiTextList.size())){
+//                    System.out.println("Mes tailles sont différentes");
+//                }
+//                else {
+//                    for(int i=0;i<pythonList.size();i++){
+//                        if(pythonList.get(i).equals(javaHTMLList.get(i))&&pythonList.get(i).equals(javaWikiTextList.get(i))){
+//                            System.out.println("Mes premières lignes sont égales");
+//                        }
+//                        else {
+//                            System.out.println("Nous avons une différence a Python = "+ pythonList.get(i) + "et JavaHTML" + javaHTMLList.get(i) + "Ou a Python : " + pythonList.get(i) + "et WikiText : " + javaWikiTextList.get(i));
+//                        }
+//
+//                    }
+
+                //            }
 
 
             }
@@ -244,9 +242,35 @@ public class Main extends Application {
         primaryStage.show();
 
     }
+    private List<String> compareCSV(String url) {
+        List<String> lineList = new ArrayList<>();
+        String FieldDelimiter = ",";
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(url));
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] fields = line.split(FieldDelimiter, -1);
+                for (int i = 0; i < fields.length; i++) {
+                    lineList.add(fields[i]);
+
+                }
+            }
+            System.out.println(lineList);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+        return lineList;
+    }
 
     private void readCSV() {
-        String CsvFile = "output/html/Comparison_between_Esperanto_and_Ido-0.csv";
+        String CsvFile = comboBoxResultValue;
         String FieldDelimiter = ",";
         BufferedReader br;
         try {
@@ -274,7 +298,8 @@ public class Main extends Application {
         }
     }
 
-    public void displayCSV( Stage primaryStage) {
+
+    public void tst( Stage primaryStage) {
         readCSV();
         primaryStage.setTitle("CSV");
         Group root = new Group();
@@ -283,12 +308,12 @@ public class Main extends Application {
             TableColumn<Map, String> columnF = new TableColumn("Ma colonne " + i);
             columnF.setCellValueFactory(new MapValueFactory<>("column"+i));
             tableView.getColumns().addAll(columnF);
+
             tableView.setEditable(true);
             columnF.setCellFactory(TextFieldTableCell.forTableColumn());
         }
 
         tableView.setItems(dataList);
-
         VBox vBox = new VBox();
         vBox.setSpacing(10);
         vBox.getChildren().add(tableView);
