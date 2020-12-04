@@ -185,23 +185,6 @@ public class Main extends Application {
                         e.printStackTrace();
                     }
                 }
-//                if(!(pythonList.size()==javaHTMLList.size()) || (pythonList.size()==javaWikiTextList.size())){
-//                    System.out.println("Mes tailles sont différentes");
-//                }
-//                else {
-//                    for(int i=0;i<pythonList.size();i++){
-//                        if(pythonList.get(i).equals(javaHTMLList.get(i))&&pythonList.get(i).equals(javaWikiTextList.get(i))){
-//                            System.out.println("Mes premières lignes sont égales");
-//                        }
-//                        else {
-//                            System.out.println("Nous avons une différence a Python = "+ pythonList.get(i) + "et JavaHTML" + javaHTMLList.get(i) + "Ou a Python : " + pythonList.get(i) + "et WikiText : " + javaWikiTextList.get(i));
-//                        }
-//
-//                    }
-
-                //            }
-
-
             }
         });
 
