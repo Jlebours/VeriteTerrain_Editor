@@ -37,7 +37,7 @@ it will be to the user to validate this result, to reject or to edit it.
   All this to be able to launch it from your project, difficulty that we don't have for the python extractor.
 * Then you can launch the application. Once the url is specified, you will then launch the chosen extractor.
   You will find the extracted tables in the list in the interface.
-* Once a table is selected in the list, it will be displayed as a tableView that you can modify in it. 
+* Once a table is selected in the list, it will be displayed as a tableView that you can modify. 
 
 
 ## Technologies
@@ -50,6 +50,8 @@ it will be to the user to validate this result, to reject or to edit it.
   
 ## Functionalities to develop
 * The automation of the creation of the JAR file of the java extractor under MAC and LINUX OS.
+* Be able to save the csv which is modified or not in the tableview of the interface.
+* Be able to see the differences between the displayed table and that of other extractors on other interface. 
 
 ## Authors 
 * Karla ROSAS
