@@ -35,7 +35,7 @@ it will be to the user to validate this result, to reject or to edit it.
   which is located in the parent directory of your project.
 * You will then build a jar file of the java extractor with the execution of a batch script. 
   All this to be able to launch it from your project, difficulty that we don't have for the python extractor.
-* Then you can launch the application. Once the url is specified, you will then launch the chosen extractor.
+* Then you can launch the application. Once the name page is specified, Comparison_between_Esperanto_and_Ido for example, you will then launch the chosen extractor.
   You will find the extracted tables in the list in the interface.
 * Once a table is selected in the list, it will be displayed as a tableView that you can modify. 
 
